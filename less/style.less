@@ -1,0 +1,407 @@
+/*
+DEFAULTS
+LAYOUT
+MAIN MENU
+UNIVERSAL
+*/
+
+@font: Arial, Helvetica, sans-serif;
+
+
+/* size for large screens only */
+@large: ~"only screen and (min-width: 1180px)";
+
+/* keep layout same as big screen but squish things down to fit landscape ipad */
+@landscape: ~"only screen and (max-width: 1180px)"; // ipad landscape to 1200px
+
+/* start to rearrange for smaller screens */
+@portrait:  ~"only screen and (max-width: 990px)"; // ipad portrait
+
+/* catch all for all smaller screens, landscape and portrait */
+@mobile:  ~"only screen and (max-width: 600px)"; 
+@notMobile:  ~"only screen and (min-width: 600px)"; 
+
+@mobileSmall: ~"only screen and (max-width: 480px)"; 
+
+
+
+@black: #000000;
+@white: #ffffff;
+
+@width: 1170px;
+@margin: 2.56410256410256%; // 30px
+@cols1: 5.982905982905983%; // 70px
+
+@cols2: @cols1*2 + @margin; 	// 170px;
+@cols3: @cols1*3 + @margin*2; // 270px;  // skinny side   
+@cols4: @cols1*4 + @margin*3; // 370px;  
+@cols5: @cols1*5 + @margin*4; // 470px;
+@cols6: @cols1*6 + @margin*5; // 570px;  // half
+@cols7: @cols1*7 + @margin*6; // 670px;
+@cols8: @cols1*8 + @margin*7; // 770px;
+@cols9: @cols1*9 + @margin*8; // 870px;  // wide beside skinny
+@cols10: @cols1*10 + @margin*9;//970px;  
+@cols11: @cols1*11 + @margin*10;//1070px;  
+
+
+
+
+
+.font-size(@px: 18) {
+	@newsize: @px/18;
+	font-size:  ~"@{newsize}em";
+}
+.box-shadow(@arguments) {
+	-webkit-box-shadow: @arguments;
+	-moz-box-shadow: @arguments;
+	box-shadow: @arguments;
+}
+.text-shadow(@arguments: 0 1px 1px rgba(0,0,0,.3)) {
+	-webkit-text-shadow: @arguments;
+	-moz-text-shadow: @arguments;
+	text-shadow: @arguments;
+}
+.opacity(@opacity: 0.5) {
+	-moz-opacity: @opacity;
+	-khtml-opacity: @opacity;
+	-webkit-opacity: @opacity;
+	opacity: @opacity;
+	@opperc: @opacity * 100;
+	-ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
+	filter: ~"alpha(opacity=@{opperc})";
+}
+.rounded(@radius: 2px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;
+}
+.button(@back: @black) {
+	background: @back;
+	display: inline-block;
+	color: #fff;
+	text-decoration: none;
+	.rounded();
+
+	&:hover, &:active {
+		.opacity();
+	}
+}
+.gone {
+	position: absolute;
+	left: -99999px;
+}
+.ungone {
+	position: static;
+	left: auto;
+}
+
+.clearStyle() { // apply this to after element.. ie:  nav:after { .clear() }
+	content: ' ';
+	clear: both;
+	display: block;
+}
+	.clear:after {
+		.clearStyle();
+	}
+.wrapStyle() {
+	max-width: @width;
+	margin: 0 auto;
+
+	@media @landscape {
+		width: auto;
+		margin: 0 20px;
+	}
+}
+
+
+.sprites() {
+	background-image: url("../images/sprites.png");
+	background-size: 300px auto; 
+	display: inline-block;
+	vertical-align: middle;	
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), 
+only screen and (min-device-pixel-ratio: 2) {
+	.sprites() {
+		background-image: url("../images/sprites@2x.png");
+	}
+}
+
+/* ----- DEFAULTS ----- */
+* {box-sizing: border-box}
+
+html {
+
+	min-height: 100%;
+	position: relative;
+}
+body {
+	font-family: @font;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 700;
+	margin: 2em 0 .35em 0;
+}
+
+p {
+	margin: .5em 0;
+}
+strong, b {
+	font-weight: 600;
+}
+em, i {
+	font-style: italic;
+}
+
+.video-container {
+	position:relative;
+	padding-bottom:56.25%;
+	padding-top:30px;
+	height:0;
+	overflow:hidden;
+
+	iframe, object, embed {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+	}
+}
+
+@media @portrait {
+
+	p {
+		.font-size(1.8);
+	}
+	p {
+		line-height:150%;
+	}
+}
+strong, b {
+	font-weight: 700;
+}
+em, i {
+	font-style: italic;
+}
+
+/* ----- LAYOUT ----- */
+.wrap {
+	.wrapStyle();
+	padding: 5px;
+	position: relative;
+	z-index: 0; // the menu was going behind the columns
+
+	@media @portrait {
+		padding: 10px 20px;
+	}
+}
+#logo {
+	margin:0;
+
+	span {
+	//	display:none;
+	}
+}
+
+/* main content layout */
+
+.columns {
+	clear: both;
+	overflow: hidden;
+
+	.wrap > article {
+		float: left;
+		width: @cols9;
+	}
+
+	aside {
+		float: left;
+		width: @cols3;
+	}
+	.wrap > article:first-child, .wrap > aside:first-child {
+		margin-right: @margin;
+	}
+
+	@media @portrait {
+		.wrap > article {
+			width: @cols8;
+		}
+		aside {
+			width: @cols4;
+		}
+	}
+
+	@media @mobile {
+		.wrap > article, .wrap > aside {
+			float: none;
+			width: auto;
+		}
+		.wrap > article:first-child, .wrap > aside:first-child {
+			margin: 0 10px 0 0;
+		}
+		.wrap > article:last-child, .wrap > aside:last-child {
+			margin: 0;
+		}
+	}
+}
+
+
+
+
+
+
+/* ----- MAIN MENU ----- */
+
+// functions.php
+// commented out function which will add a home button with home icon
+
+#menu-show {
+	.gone();
+}
+#main-menu:after {
+	.clearStyle();
+}
+#menu-header { // main nav container
+	position: relative;
+	z-index: 9999;
+}
+#main-menu {
+	background: @black;
+
+	&, ul, li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	li {	
+		display: block;
+		float: left;
+	}
+	a {
+		display: block;
+		text-decoration: none;
+		color: @white;
+		height: 50px;
+		line-height: 50px; // confirmed newer sites use height/line-height instead of padding
+		padding: 0 20px;
+		
+		&:link, &:visited {
+			background: fade(@white,30%);
+		}
+		&:hover, &:active {
+			background: fade(@white,50%);
+		}
+	}
+
+
+	.sub-menu {
+		.gone();
+		background: @black;
+
+		li {
+			float: none;
+		}
+		a {
+
+			&:link, &:visited {
+				background: fade(@white,50%);
+			}
+			&:hover, &:active {
+				background: fade(@white,70%);
+			}
+		}
+	} // .sub-menu
+
+	li:hover {
+		.sub-menu {
+			left:auto;
+		}
+		& > a {
+			background: fade(@white,50%); // parent link hover state
+		}
+	}
+
+} // #main-menu 
+
+@media @portrait {
+	#menu-show {
+		.ungone();
+	}
+
+	#menu-header {
+		position:absolute;
+		top: 0;
+		left: -250px;
+		width: 250px;
+		height: 100%;
+		-webkit-transition: left 1s; // slide menu in/out
+		transition: left 1s;
+	}
+	#main-menu {
+		height: 100%;
+		width: 250px;
+
+		li {
+			float: none;
+		}
+		a {
+			height: auto;
+			line-height: normal;
+			padding: 10px 20px;
+			border-bottom: 1px solid @white;
+		}
+		.sub-menu {
+			.ungone();
+
+			a {
+				.font-size(14);
+				padding-left: 30px;
+
+				&:hover, &:active {
+					background: fade(@white,50%);
+				}
+			}
+		}
+
+
+		li:hover > a,  {
+			background: fade(@white,30%);
+		}
+
+	} // #main-menu
+
+	#menu-show {
+		position: absolute;
+		top: 0;
+		right: -50px;
+		display: block;
+		width: 50px;
+		background: @black;
+		.rounded(0 0 5px 0);
+		color: @white;
+		.font-size(12);
+		text-align: center;
+		padding: 5px 0 7px 0;
+
+		.fa {
+			display: block;
+			.font-size(28);
+		}
+	} // #menu-show
+
+
+	#menu-header.menu-open {
+		left: 0; // can't be auto because transition won't work 
+	}
+
+} // @media @portrait
+
+
+
+
+/* ----- UNIVERSAL ----- */
